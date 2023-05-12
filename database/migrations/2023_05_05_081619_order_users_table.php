@@ -23,6 +23,8 @@ class OrderUsersTable extends Migration
             $table->string('paymentMethod');
             $table->string('email')->unique();
             $table->string('phone');
+            $table->timestamps();
+
         });
     }
 
