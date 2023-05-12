@@ -5,6 +5,7 @@ use App\Http\Controllers\api\CategoriesController;
 use App\Http\Controllers\api\ProductsController;
 use App\Http\Controllers\api\StoreController;
 use App\Http\Controllers\NavaPoshtaController;
+use App\Http\Controllers\PaymentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
@@ -19,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::post('/stripe-payment', [PaymentController::class, 'stripePayment']);
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
