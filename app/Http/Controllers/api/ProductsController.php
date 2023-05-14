@@ -39,35 +39,35 @@ class ProductsController extends Controller
     //
     //        return response()->json($items);
     //    }
-    public function index(Request $request)
-    {
-        // Создаем запрос к модели Product
-        $query = Product::query();
-
-        // Проверяем наличие параметра сортировки в запросе
-        if ($request->has('sort')) {
-            // Получаем список полей для сортировки из параметра "sort"
-            $sortFields = explode(',', $request->input('sort'));
-
-            // Проходимся по каждому полю для сортировки
-            foreach ($sortFields as $sortField) {
-                // Определяем направление сортировки (по возрастанию или убыванию)
-                $direction = Str::startsWith($sortField, '-') ? 'desc' : 'asc';
-
-                // Удаляем знак минуса (если есть) из имени поля для сортировки
-                $fieldName = ltrim($sortField, '-');
-
-                // Добавляем условие сортировки по полю и направлению в запрос
-                $query->orderBy($fieldName, $direction === 'asc' ? 'desc' : 'asc'); // изменение направления сортировки
-            }
-        }
-
-        // Выполняем запрос и получаем список продуктов
-        $items = $query->get();
-
-        // Возвращаем результат в виде JSON-ответа
-        return response()->json($items);
-    }
+    //    public function index(Request $request)
+    //    {
+    //        // Создаем запрос к модели Product
+    //        $query = Product::query();
+    //
+    //        // Проверяем наличие параметра сортировки в запросе
+    //        if ($request->has('sort')) {
+    //            // Получаем список полей для сортировки из параметра "sort"
+    //            $sortFields = explode(',', $request->input('sort'));
+    //
+    //            // Проходимся по каждому полю для сортировки
+    //            foreach ($sortFields as $sortField) {
+    //                // Определяем направление сортировки (по возрастанию или убыванию)
+    //                $direction = Str::startsWith($sortField, '-') ? 'desc' : 'asc';
+    //
+    //                // Удаляем знак минуса (если есть) из имени поля для сортировки
+    //                $fieldName = ltrim($sortField, '-');
+    //
+    //                // Добавляем условие сортировки по полю и направлению в запрос
+    //                $query->orderBy($fieldName, $direction === 'asc' ? 'desc' : 'asc'); // изменение направления сортировки
+    //            }
+    //        }
+    //
+    //        // Выполняем запрос и получаем список продуктов
+    //        $items = $query->get();
+    //
+    //        // Возвращаем результат в виде JSON-ответа
+    //        return response()->json($items);
+    //    }
 
 
     public function showProduct($id)
@@ -114,4 +114,29 @@ class ProductsController extends Controller
     }
 
 
+    public function index(Request $request)
+    {
+        $sortBy = $request->input('order_by', 'price'); // change default sorting field to price
+        $sortOrder = $request->input('sort_by', 'asc');
+        $perPage = $request->input('per_page', 8); // change parameter name to "per_page"
+
+        $items = Product::orderBy($sortBy, $sortOrder)->paginate($perPage);
+
+        return response()->json($items);
+    }
+
+
+    //    public function index(Request $request)
+    //    {
+    //        $query = Product::query();
+    //
+    //        if ($request->has('sort_by')&& $request->has('order_by')) {
+    //                    $query->orderBy($request->order_by,$request->sort_by);
+    //        }
+    //        $products = $query->paginate(11);
+    //
+    //        return response()->json($products);
+    //    }
+
 }
+

@@ -19,8 +19,10 @@ use Illuminate\Support\Facades\Route;
 | routes are loaded by the RouteServiceProvider within a group which
 | is assigned the "api" middleware group. Enjoy building your API!
 |
-*/
-Route::post('/stripe-payment', [PaymentController::class, 'stripePayment']);
+*/    Route::get('/getSession', [\App\Http\Controllers\PaymentController::class, 'stripePayment']);
+Route::get('/cancel',function (){return view('welcome');});
+Route::get('/success',function (){return view('welcome');});
+
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
@@ -61,7 +63,10 @@ Route::get('/products/{productId}/ratings', [ProductsController::class, 'ratings
 
 
 //Route::get('products', [ProductsController::class, 'index'])->name('products');
-Route::get('/items', [ProductsController::class, 'index']);
+Route::get('/products', [ProductsController::class, 'index']);
+Route::post('/products', [ProductsController::class, 'index']);
+
+
 Route::get('/showRecommendation', [ProductsController::class, 'showRecommendationProducts']);
 Route::post('create', [StoreController::class, 'index']);
 Route::get('/product/{id}', [ProductsController::class, 'showProduct']);
